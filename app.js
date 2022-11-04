@@ -7,7 +7,7 @@ const userRoutes = require('./routes/user');
 
 const port = process.env.PORT || 3000;
 mongoose.connect(
-  "mongodb+srv://meeshika2:meeshika@cluster0.guftx.mongodb.net/hostel1?retryWrites=true&w=majority",
+  "mongodb+srv://meeshika2:meeshika@cluster0.guftx.mongodb.net/hostel2?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

@@ -1,99 +1,109 @@
-const express = require('express');
-const router = express.Router();
-// encrypt the password
-const bcrypt = require ('bcryptjs');
-const passport = require('passport')
+const mongoose = require("mongoose");
+//const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+//require("dotenv").config();
+const User = require("../model/User.js");
 
-// User model to store data
-const User = require('../model/User.js');
 
-// Login Page
-router.get('/login', (req, res) => res.render('login'));
 
-// Register Page
-router.get('/register', (req, res) => res.render('register'));
-
-// Register Handle
-router.post('/register', (req, res) =>{
-    const{name, email, password, password2} = req.body;
-    let errors = [];
-
-    // Check required fields
-    if(!name || !email || !password || !password2){
-        errors.push({msg: 'Please fill in all fields'});
-    }
-    // Check password match
-    if(password != password2){
-        errors.push({msg: 'Password do not mathch'})
-    }
-    // Check password length
-    if(password.length < 6){
-        errors.push({msg: 'Password should be at least 6 charachters'});
-    }
-
-    if(errors.length > 0){
-        res.render('register',{
-            errors,
-            name,
-            email,
-            password,
-            password2
+exports.user_signup = (req, res, next) => {
+    console.log("signup request made");
+  User.find({ email: req.body.email })
+    .exec()
+    .then(user => {
+      if (user.length >= 1) {
+        return res.status(409).json({
+          message: "Mail exists"
         });
-    }else{
-        // validation pass
-        User.findOne({email: email})
-        .then(user => {
-            if(user){
-                // User exist
-                errors.push({msg: 'Email is already registered'})
-                res.render('register',{
-                    errors,
-                    name,
-                    email,
-                    password,
-                    password2
+      } else {
+            const user = new User({
+              _id: new mongoose.Types.ObjectId(),
+              name:req.body.name,
+              email: req.body.email,
+              password: req.body.password,
+            });
+            user
+              .save()
+              .then(result => {
+                console.log(result);
+                res.status(201).json({
+                  message: "User created"
                 });
-            } else{
-                const newUser = new User({
-                    name,
-                    email,
-                    password
+              })
+              .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                  error: err
                 });
+              });
+          }
+        });
+    }
+exports.user_login = (req, res, next) => {
+  console.log("here are we in login");
+  console.log(req.body.email);
+  User.find({ email: req.body.email })
+    .exec()
+    .then(user => {
+      if (user.length < 1) {
+        return res.status(401).json({
+          message: "user doesnot exists!!"
+        });
+      }
+      bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+        if (err) {
+          console.log(req.body.email);
 
-                // encrypt password i.e Hash password
-                bcrypt.genSalt(10, (err, salt) => 
-                bcrypt.hash(newUser.password,salt,(err, hash)=>{
-                    if(err) throw err;
-                    // Set password to hash
-                    newUser.password = hash;
-                    // Save user
-                    newUser.save()
-                    .then(user =>{
-                        req.flash('success_msg', 'You are now registered and can log in');
-                        res.redirect('/users/login');
-                    })
-                    .catch(err => console.log(err))
-                }))
+          return res.status(401).json({
+            message: "Auth failed"
+          });
+        }
+        if (result) {
+          const token = jwt.sign(
+            {
+              email: user[0].email,
+              userId: user[0]._id
+            },
+            process.env.JWT_KEY,
+            {
+              expiresIn: "1h"
             }
+          );
+          console.log(req.body.email);
+          return res.status(200).json({
+            message: "Auth successful",
+            token: token
+          });
+        }
+        console.log(req.body.email);
+
+        res.status(401).json({
+          message: "Auth failed"
         });
-    }
-});
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
 
-// Login Handle
-router.post('/login', (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/users/login',
-        failureFlash: true
-    })(req, res, next);
-});
 
-// Logout Handle
-router.get('/logout', (req, res) =>{
-    req.logout();
-    req.flash('success_msg', 
-    ('You have successfully logged out.'));
-    res.redirect('/users/login');
-})
+exports.user_delete = (req, res, next) => {
+  User.remove({ _id: req.params.userId })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: "User deleted"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
 
-module.exports = router;
