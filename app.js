@@ -13,12 +13,14 @@ const morgan = require("morgan");
 const path = require('path');
 const mongoose = require("mongoose");
 const User = require('./models/User.js');
+const bodyParser = require("body-parser");
+//const flash = require('connect-flash');
 
 const port = process.env.PORT || 3010;
 
 
 mongoose.connect(
-    "mongodb+srv://meeshika2:meeshika@cluster0.guftx.mongodb.net/hostel3?retryWrites=true&w=majority",
+    "mongodb+srv://meeshika2:meeshika@cluster0.guftx.mongodb.net/hostel56?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -50,6 +52,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
@@ -72,15 +78,18 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
   res.render('register.ejs')
 })
 
-app.post('/register', checkNotAuthenticated, async (req, res) => {
+app.post('/register', 
+  //checkNotAuthenticated, 
+  async (req, res) => {
   const {name,password,role,eid,email} = req.body;
   try {
-    const hashedPassword = await bcrypt.hash(password, 10)
+    //const hashedPassword = await bcrypt.hash(password, 10)
     const newuser = new User({
       id: Date.now().toString(),
       name: name,
       email: email,
-      password: hashedPassword,
+      password: password,
+      // hashedPassword,
       eid: eid,
       role:role
   });
