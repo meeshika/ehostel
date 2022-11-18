@@ -22,6 +22,7 @@ img{
   width: 30px;
   height: 30px;
   vertical-align: middle;
+  margin-right: 5px;
 }
 #text{
   line-height: 50px;
@@ -120,8 +121,8 @@ height: 300px;
 box-sizing: border-box;
 margin: 30px;
 position: relative;
-  background: rgb(233, 232, 233);
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+background: rgb(255, 254, 255);
+box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .s-box img{
 height: 75px;
@@ -225,6 +226,9 @@ table{
   border-top-right-radius: 10px;
 
  }
+ tbody{
+  background: white;
+ }
 .tbl-content{
   height:300px;
   overflow-x:auto;
@@ -248,7 +252,7 @@ td{
   font-weight: 500;
   font-size: 18px;
   color: rgb(16, 15, 15);
-  border-bottom: solid 1px rgba(53, 51, 51, 0.1);
+  border-bottom: solid 2px rgba(53, 51, 51, 0.1);
 }
 
 
@@ -308,10 +312,11 @@ section{
   display: none;
   position: fixed;
   width: 700px;
-  height: 600px;
+  height: 650px;
   border-radius: 20px;
   left: 30%;
-  top: 10%;
+  bottom: 5%;
+  /* top: 10%; */
   padding: 10px;
   align-content: center;
   justify-content: center;
@@ -320,13 +325,20 @@ section{
   box-shadow: 14px 14px 20px #464748;
   z-index: 1;
 }
-
-.brand-logo {
+.form-popup img{
+  position: relative;
+  left: 650px;
+  top:5px;
+}
+:hover .form-popup img{
+  cursor: pointer;
+}
+.brand-logo{
   position: relative;
   left:15px;
   width: 120px;
   height: 120px;
-  background: url("sitelogo.png");
+  background-image: url("img/sitelogo.png");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -375,7 +387,7 @@ input::placeholder {
   color: gray;
 }
 
-input,select,option{
+input,select,option,textarea{
   background: #ecf0f3;
   padding: 10px;
   padding-left: 20px;

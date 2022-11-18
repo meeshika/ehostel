@@ -46,7 +46,10 @@ let progress2 = setInterval(() => {
 
 // for pop-form
 function openForm() {
+
     document.getElementById("myForm").style.display = "block";
+    // var mbody=document.getElementById("main-bd");
+    // mbody.style.backgroundColor = 'rgb(117, 214, 117)';
 
   }
   
