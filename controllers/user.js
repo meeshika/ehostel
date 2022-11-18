@@ -11,6 +11,7 @@
 //   User.find({ email: req.body.email })
 //     .exec()
 //     .then(user => {
+//     .then(user => {
 //       if (user.length >= 1) {
 //         return res.status(409).json({
 //           message: "Mail exists"

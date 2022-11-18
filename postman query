@@ -4,3 +4,11 @@
  "password":"test1234",
  "eid":"102067005"
 }
+,
+{
+    "name":"Meeshika",
+    "email":"gargmeeshika@gmail.com",
+    "password":"test1234",
+    "role":"student",
+    "eid":"102067005"
+   }
