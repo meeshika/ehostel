@@ -10,30 +10,30 @@
 <body>
 	<div class="sidenav">
 		<div class="user-acc">
-			<img src="img/sitelogo.png" alt="">
+			<img src="sitelogo.png" alt="">
 			<span id="text" href="#">Hello Anuj</span>
 		</div>
 		<div class="nav-options">
 			<div class="nav-hov">
-				<a href=""><img src="img/home.png" alt="">
+				<a href=""><img src="home.png" alt="">
 					<span id="text" href="#">Home</span>
 				</a>
 			</div>
 			<div class="nav-hov">
-				<a href=""><img src="img/dashboard.png" alt="">
+				<a href=""><img src="dashboard.png" alt="">
 					<span id="text" href="#">Dashboard</span>
 				</a>
 				
 			</div>
 			<div class="nav-hov">
-				<a href=""><img src="img/contact.png" alt="">
+				<a href=""><img src="contact.png" alt="">
 					<span id="text" href="#">Contact</span>
 				</a>
 				
 			</div>
 			<div class="nav-hov">
 				<a href="">
-					<img src="img/logout.png" alt="">
+					<img src="logout.png" alt="">
 					<span id="text" href="#">Logout</span>
 				</a>
 				
@@ -41,7 +41,7 @@
 		</div>
 		
 	  </div>
-	<div class="main" id="main-bd">
+	<div class="main">
 		<section class="services">
 			<!--heading---------------->
 			<div class="s-heading">
@@ -54,7 +54,7 @@
 			<!--top-bar-------->
 			<div class="bar"></div>
 			<!--img---------->
-			<img alt="1" src="img/electrician.png" />
+			<img alt="1" src="electrician.png" />
 			<!--servies-name---------->
 			<h1>Electrician</h1>
 			<!--details------>
@@ -67,7 +67,7 @@
 			<!--top-bar-------->
 			<div class="bar"></div>
 			<!--img---------->
-			<img alt="2" src="img/plumbing.png" />
+			<img alt="2" src="plumbing.png" />
 			<!--servies-name---------->
 			<h1>Plumbing</h1>
 			<!--details------>
@@ -80,7 +80,7 @@
 			<!--top-bar-------->
 			<div class="bar"></div>
 			<!--img---------->
-			<img alt="3" src="img/room cleaning.jpg" />
+			<img alt="3" src="room cleaning.jpg" />
 			<!--servies-name---------->
 			<h1>Cleaning</h1>
 			<!--details------>
@@ -92,7 +92,7 @@
 				<!--top-bar-------->
 				<div class="bar"></div>
 				<!--img---------->
-				<img alt="1" src="img/miscellaneous.png" />
+				<img alt="1" src="miscellaneous.png" />
 				<!--servies-name---------->
 				<h1>Miscellenous</h1>
 				<!--details------>
@@ -107,11 +107,11 @@
 
 			<!-- for pop-form -->
 			<div class="form-popup" id="myForm">
-				<img src="img/cross.png" alt="" onclick="closeForm()">
 				<div class="brand-logo"></div>
 				<div class="brand-title">COMPLAINT-FORM</div>
 				<div class="inputs">
 				  <input type="number" placeholder="Enter room-number" name="room-no" required>
+				  <input type="text" placeholder="Enter Block(0 if no block)" name="block" required>
 				  <input type="tel" placeholder="Enter mobile number" name="mno" required maxlength="10" minlength="10">
 				  <select name="time" id="time">
 					<option value="none" selected disabled hidden>Select time slot</option>
@@ -121,9 +121,8 @@
 					<option value="4-6">4:00-6:00 PM</option>
 					<option value="6-8">6:00-8:00 PM</option>
 				  </select>
-				  <textarea name="description" id="desc" cols="62" rows="3" placeholder="Enter any additional description of the issue faced(eg tap-leak,switch not working etc)"></textarea>
 				  <button type="submit">REGISTER COMPLAINT</button>
-				  <!-- <button type="submit" onclick="closeForm()">CLOSE</button> -->
+				  <button type="submit" onclick="closeForm()">CLOSE</button>
 				</div>
 			  </div>
 
@@ -149,7 +148,7 @@
       <thead>
         <tr>
           <th>C.No</th>
-          <th>Complaint Type</th>
+          <th>Complaint</th>
           <th>Date</th>
           <th>Slot Booked</th>
           <th>Status</th>
@@ -157,26 +156,41 @@
       </thead>
     </table>
   </div>
-  <div class="tbl-content">
-    <table cellpadding="0" cellspacing="0" border="0">
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Cleaning</td>
-          <td>25 Nov 2022</td>
-          <td>5-6</td>
-          <td><img src="img/done.webp" alt="">Complete</td>
-        </tr>
-        <tr>
-			<td>2</td>
-			<td>Plumbing</td>
-			<td>27 Nov 2022</td>
-			<td>1-2</td>
-			<td><img src="img/pending.png" alt=""> Pending</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- <div class="tbl-content">
+    <table cellpadding="0" cellspacing="0" border="0"> -->
+		<!-- <tbody>
+			<%if (complaints.length >0){%>
+			<% complaints.forEach(function(row){%>
+			<tr>
+				<td> <%= row.type %></td>
+				<td> <%= row.slot %></td>
+				<td> <%= row.desc %></td>
+				<td> <%= row.date %></td>
+				<td> <%= row.status %></td>
+			</tr>
+			<% })}else { %>
+				<tr>
+					<td colspan = "6">YAYA! you have no complaints</td>
+				</tr>
+		</tbody> -->
+		<!-- <tbody>
+			<tr>
+			  <td>1</td>
+			  <td>Cleaning</td>
+			  <td>25 Nov 2022</td>
+			  <td>5-6</td>
+			  <td>Pending</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>Plumbing</td>
+				<td>27 Nov 2022</td>
+				<td>1-2</td>
+				<td>Done</td>
+			</tr>
+		  </tbody> -->
+    <!-- </table> -->
+  <!-- </div> -->
 </section>
 		
 </div>

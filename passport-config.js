@@ -11,15 +11,15 @@ exports.intializePassport  = (passport) => {
   },async(email,password,done)=>{
     try{
     console.log("intialize passport:")
-    console.log(email);
-    console.log(password);
+   // console.log(email);
+   // console.log(password);
 
     const user = await User.find({ email});
-    console.log(user);
+   // console.log(user);
   if(!user) return done(null,false,{message: 'Incorrect email'});
-      console.log("user found");
-      console.log(user[0]['password']);
-      console.log(password);
+    //  console.log("user found");
+    //  console.log(user[0]['password']);
+    //  console.log(password);
   if(user[0]['password'] !== password ) return done(null,false,{message:'Incorrect password'});
   console.log("sahi user password");
   return done(null,{user},{message:"login succesful"});

@@ -13,10 +13,12 @@ const morgan = require("morgan");
 const path = require('path');
 const mongoose = require("mongoose");
 const User = require('./models/User.js');
+const Complaint = require('./models/Complaint.js')
 const bodyParser = require("body-parser");
+
 //const flash = require('connect-flash');
 
-const port = process.env.PORT || 3010;
+const port = process.env.PORT || 3000;
 
 
 mongoose.connect(
@@ -67,21 +69,23 @@ app.get('/register', (req, res) => {
 app.post('/register', 
   //checkNotAuthenticated, 
   async (req, res) => {
-    const {name,password,role,eid,email} = req.body;
+    const {name,password,role,eid,email,hostel} = req.body;
     console.log(req.body.name);
     console.log(email);
     console.log(role);
+    console.log(hostel);
     try {
       const hashedPassword = await bcrypt.hash(password, 10)
       const newuser = new User({
-          id: Date.now().toString(),
-          name: name,
-          email: email,
-          password: password,
-          //password: hashedPassword,
-          eid: eid,
-          role:role
-          });
+        id: Date.now().toString(),
+        name: name,
+        email: email,
+        password: password,
+        //password: hashedPassword,
+        eid: eid,
+        role:role,
+        hostel:hostel
+        });
           newuser.save().then(user =>{
             req.flash('success_msg', 'You are now registered and can log in');
             res.redirect('/login');
@@ -122,16 +126,48 @@ app.post('/login',
  passport.authenticate('local',
   { 
     successRedirect: '/dashboard',
-     failureRedirect: '/failed' ,
+     failureRedirect: '/register' ,
   }));
 
+app.post('/rcp',(req,res)=>{
+  const{type,registeredby,slot,hostel,desc }=req.body;
+  try{
+  const newComplaint = new Complaint({
+    id: Date.now().toString(),
+    registeredby:registeredby,
+    slot:slot,
+    hostel:hostel,
+    desc:desc
+    });
+    newComplaint.save().then(Complaint =>{
+      console.log("complaint registered");
+      console.log(Complaint);
+    }).catch(err => {
+      console.log('new complaint didnt get saved in mongo')
+      console.log(err)
+      
+    })
+  } catch(err){
+    console.log(err);
+  }
+  })
 
 
-app.get('/dashboard',
-isAuthenticated,
-(req,res)=>{
-  res.render('dashboard.ejs');
+app.get('/dashboard', isAuthenticated,
+async(req,res)=>{
   //res.send(user);
+  const{email} = req.body;
+  const complaints = await Complaint.find({email});
+  console.log(complaints);
+  res.render('dashboard.ejs'
+  ,{complaints}
+  );
+  //res.json({complaints});
+
+
+  
+  
+
 }
 )
 
