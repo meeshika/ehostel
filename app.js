@@ -129,9 +129,11 @@ app.post('/login',
      failureRedirect: '/register' ,
   }));
 
-app.post('/dashboard',(req,res)=>{
-  const{type,registeredby,slot,hostel,desc,val}=req.body;
-  console.log(val);
+app.post('/dashboard',
+isAuthenticated,
+(req,res)=>{
+  const{type,registeredby,slot,hostel,desc,room}=req.body;
+  //console.log(val);
   // var ctype ;
   // if( val == 1) ctype = "cleaning";
   // if( val == 2) ctype = "plumbing";
@@ -140,8 +142,9 @@ app.post('/dashboard',(req,res)=>{
   const newComplaint = new Complaint({
     //type:
     id: Date.now().toString(),
-    registeredby:registeredby,
-    slot:slot,
+    registeredby:req.body.email,
+    room:room,
+    type:type,
     hostel:hostel,
     desc:desc
     });
