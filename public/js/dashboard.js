@@ -44,12 +44,13 @@ let progress2 = setInterval(() => {
 }, speed);
 
 
-//fetch('/dashboard')
-
 // for pop-form
-function openForm(val) {
+function openForm() {
+
     document.getElementById("myForm").style.display = "block";
-    console.log(val);
+    // var mbody=document.getElementById("main-bd");
+    // mbody.style.backgroundColor = 'rgb(117, 214, 117)';
+
   }
   
   function closeForm() {
