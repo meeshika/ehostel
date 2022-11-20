@@ -112,9 +112,10 @@
 				<div class="brand-title">COMPLAINT-FORM</div>
 				<div class="inputs">
 					<form action="" method="post">
-						<input type="number" placeholder="Enter room-number" name="room-no" required>
-						<input type="tel" placeholder="Enter mobile number" name="mno" required maxlength="10" minlength="10">
-						<select name="time" id="time">
+						<input type="number" placeholder="Enter room-number" name="room" required>
+						<input type="text" placeholder="enter type" name="type" required>
+						<input type="tel" placeholder="Enter mobile number" name="conatct" required maxlength="10" minlength="10">
+						<select name="slot" id="time">
 						  <option value="none" selected disabled hidden>Select time slot</option>
 						  <option value="10-12">10:00-12:00 AM</option>
 						  <option value="1-2">1:00-2:00 PM</option>
@@ -122,7 +123,7 @@
 						  <option value="4-6">4:00-6:00 PM</option>
 						  <option value="6-8">6:00-8:00 PM</option>
 						</select>
-						<textarea name="description" id="desc" cols="62" rows="3" placeholder="Enter any additional description of the issue faced(eg tap-leak,switch not working etc)"></textarea>
+						<textarea name="desc" id="desc" cols="62" rows="3" placeholder="Enter any additional description of the issue faced(eg tap-leak,switch not working etc)"></textarea>
 						<button type="submit">REGISTER COMPLAINT</button>
 					</form>
 				  
