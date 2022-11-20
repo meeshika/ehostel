@@ -44,10 +44,12 @@ let progress2 = setInterval(() => {
 }, speed);
 
 
-// for pop-form
-function openForm() {
-    document.getElementById("myForm").style.display = "block";
+//fetch('/dashboard')
 
+// for pop-form
+function openForm(val) {
+    document.getElementById("myForm").style.display = "block";
+    console.log(val);
   }
   
   function closeForm() {
