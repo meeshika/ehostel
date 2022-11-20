@@ -129,10 +129,16 @@ app.post('/login',
      failureRedirect: '/register' ,
   }));
 
-app.post('/rcp',(req,res)=>{
-  const{type,registeredby,slot,hostel,desc }=req.body;
+app.post('/dashboard',(req,res)=>{
+  const{type,registeredby,slot,hostel,desc,val}=req.body;
+  console.log(val);
+  // var ctype ;
+  // if( val == 1) ctype = "cleaning";
+  // if( val == 2) ctype = "plumbing";
+  // if( val == 3) ctype = ""
   try{
   const newComplaint = new Complaint({
+    //type:
     id: Date.now().toString(),
     registeredby:registeredby,
     slot:slot,
