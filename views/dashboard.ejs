@@ -6,12 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/dashboard.css">
+	<link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 <body>
 	<div class="sidenav">
 		<div class="user-acc">
 			<img src="img/sitelogo.png" alt="">
-			<span id="text" href="#">Hello Anuj</span>
+			<h3>Hello Anuj</h3>
 		</div>
 		<div class="nav-options">
 			<div class="nav-hov">
@@ -33,7 +35,7 @@
 			</div>
 			<div class="nav-hov">
 				<a href="">
-					<img src="img/logout.png" alt="">
+					<img src="/img/logout.png" alt="">
 					<span id="text" href="#">Logout</span>
 				</a>
 				
@@ -45,7 +47,8 @@
 		<section class="services">
 			<!--heading---------------->
 			<div class="s-heading">
-			<h1>Ser<font color="rgba(189, 155, 195, 0.342)">vic</font>es</h1>
+			<h1>Our Services</h1>
+			<p>We provide you with a series of quality services which caters all your needs.<br>Register your complaints now.</p>
 			</div>
 			<!--services-box-container------------------->
 			<div class="s-box-container">
@@ -60,7 +63,7 @@
 			<!--details------>
 				<p>Tap in to register electrical problems in your room</p>
 			<!--btn---------->
-			<a class="s-btn" onclick="openForm()" >Register</a>
+			<!-- <a class="s-btn" onclick="openForm()" >Register</a> -->
 			</div>
 				<!--service-box-1---------------->	
 			<div class="s-box">
@@ -73,7 +76,7 @@
 			<!--details------>
 				<p>Any leakage,discontinuity in water supply.Dont worry!</p>
 			<!--btn---------->
-			<a class="s-btn" onclick="openForm()">Register</a>
+			<!-- <a class="s-btn" onclick="openForm()">Register</a> -->
 			</div>
 				<!--service-box-3---------------->	
 			<div class="s-box">
@@ -86,7 +89,7 @@
 			<!--details------>
 				<p>Get your room super-cleaned with just one click</p>
 			<!--btn---------->
-			<a class="s-btn" onclick="openForm()">Register</a>
+			<!-- <a class="s-btn" onclick="openForm()">Register</a> -->
 			</div>
 			<div class="s-box">
 				<!--top-bar-------->
@@ -98,9 +101,10 @@
 				<!--details------>
 					<p>Tap in to register any other miscellaneous problems!</p>
 				<!--btn---------->
-				<a class="s-btn" onclick="openForm()">Register</a>
+				<!-- <a class="s-btn" onclick="openForm()">Register</a> -->
 				</div>
 			</div>
+			<a class="s-btn" onclick="openForm()">Register</a>
 			</section>
 
 
@@ -138,11 +142,16 @@
 				</div>
 			  </div>
 
-
+			  <!-- <hr> -->
 
 			<section>
 				<div class="progress">
+					<!-- <div class="s-heading"> -->
+						<h1>Progress Trackers</h1>
+						<p>Get the realtime status of the progress bar representing your completed and pending complaints.</p>
+					<!-- </div> -->
 					<div class="container">
+						
 						<div class="circular-progress cp1">
 							<div class="value-container vc1"></div>
 						</div>
@@ -155,6 +164,8 @@
 			</section>
 			
 <section class="table-comp">
+	<h1>Complaint Status</h1>
+	<p>Get complete track of your logged in complaints in an organized fashion.</p>
   <div class="tbl-header">
     <table cellpadding="0" cellspacing="0" border="0">
       <thead>
@@ -180,20 +191,6 @@
 				<td><%= complaints[i].status %></td>
 			</tr>
 		<% } %>
-        <!-- <tr>
-          <td>1</td>
-          <td>Cleaning</td>
-          <td>25 Nov 2022</td>
-          <td>5-6</td>
-          <td><img src="img/done.webp" alt="">Complete</td>
-        </tr>
-        <tr>
-			<td>2</td>
-			<td>Plumbing</td>
-			<td>27 Nov 2022</td>
-			<td>1-2</td>
-			<td><img src="img/pending.png" alt=""> Pending</td>
-        </tr> -->
       </tbody>
     </table>
   </div>
@@ -219,6 +216,19 @@
   </div> -->
 </section>
 		
+<footer>
+
+	<center>
+		<a href=""><img src="/img/facebook.png" alt=""></a>
+		<a href=""><img src="/img/insta.jpg" alt=""></a>
+		<a href=""><img src="/img/twitter.png" alt=""></a>
+		<a href=""><img src="/img/pintrest.png" alt=""></a>
+	</center>
+	<center style="color: white;">
+		Made with ❤️ do support!
+	</center>
+	
+</footer>
 </div>
 <script src="js/dashboard.js"></script>
 </body>
