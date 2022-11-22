@@ -16,7 +16,7 @@ const ComplaintSchema = mongoose.Schema({
     contact: {
         type: String
     },
-    staus:{
+    status:{
         type: String
     },
     slot:{
