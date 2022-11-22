@@ -11,16 +11,16 @@ exports.intializePassport  = (passport) => {
   },async(email,password,done)=>{
     try{
     console.log("intialize passport:")
-   // console.log(email);
-   // console.log(password);
+    console.log(email);
+    console.log(password);
 
-    const user = await User.find({ email});
+    const user = await User.findOne({ email});
    // console.log(user);
   if(!user) return done(null,false,{message: 'Incorrect email'});
     //  console.log("user found");
     //  console.log(user[0]['password']);
     //  console.log(password);
-  if(user[0]['password'] !== password ) return done(null,false,{message:'Incorrect password'});
+  if(user['password'] !== password ) return done(null,false,{message:'Incorrect password'});
   console.log("sahi user password");
   return done(null,{user},{message:"login succesful"});
   } catch (error){
@@ -49,9 +49,46 @@ passport.deserializeUser(async(user,done)=>{
 };
 
 exports.isAuthenticated = ( req,res,next)=>{
+  console.log("====================isauthenticated====================")
+  console.log(req.user);
   if(req.user) return next();
   res.redirect("/failed")
 }
+
+exports.checkAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    if (req.user.role === 'student') {
+      req.session.role = 'student'
+    }
+
+    if (req.user.role === 'admin') {
+      req.session.role = 'admin'
+    }
+    return next()
+  }
+  req.flash('error_msg', "You're not authorized to view this resource")
+  res.redirect('/login')
+}
+
+exports.checkNotAuthenticated= (req, res, next) =>{
+  // if authenticated
+  if (req.isAuthenticated()) {
+    if (req.user.role === 'admin') {
+      req.session.role = 'admin'
+      return res.redirect('/admin/dashboard')
+    }
+
+    if (req.user.role === 'student') {
+      req.session.role = 'student'
+      return res.redirect('/dashboard')
+    }
+  }
+  // if not authenticated just res that call
+  next()
+}
+
+
+
 
 // function initialize(passport, getUserByEmail, getUserById) {
 //   const authenticateUser = async (email, password, done) => {
