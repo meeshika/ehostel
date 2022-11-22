@@ -34,7 +34,14 @@ mongoose.connect(
   mongoose.Promise = global.Promise;
   
   
-const { intializePassport , isAuthenticated} = require("./passport-config.js")
+const { 
+  intializePassport , 
+  isAuthenticated 
+   
+ //, checkAuthenticated ,
+  // checkNotAuthenticated
+  } = require("./passport-config.js")
+const { userInfo } = require('os')
 intializePassport(passport);
 
 app.use(bodyParser.json());
@@ -122,56 +129,97 @@ app.get('/login',(req,res)=>{
 //   }
 // )
 
-app.post('/login',
- passport.authenticate('local',
+app.post('/login',passport.authenticate
+('local',
   { 
     successRedirect: '/dashboard',
      failureRedirect: '/register' ,
-  }));
+  }
+));
 
-app.post('/dashboard',
-isAuthenticated,
-(req,res)=>{
-  const{type,registeredby,slot,hostel,desc,room}=req.body;
-  //console.log(val);
+app.post('/dashboard',isAuthenticated,async(req,res)=>{
+  var user1 = new User();
+  user1  = req.user;
+  console.log(user1);
+  let objKeys = Object.keys(user1);
+  let array =[];
+  objKeys.forEach(key => {
+      let value = user1[key];
+      array.push(value);
+  });
+  console.log(array[0]);
+  let uservalue = Object.values(array[0]);
+  console.log(uservalue);
+  console.log(uservalue[2]);
+  const email = uservalue[2];
+  const hostel = uservalue[6];
+  console.log("==========complaints====");
+  console.log(email);
+  const user = await User.find({email});
+  const{type,registeredby,slot,desc,room}=req.body;
+  console.log(email);
   // var ctype ;
   // if( val == 1) ctype = "cleaning";
   // if( val == 2) ctype = "plumbing";
   // if( val == 3) ctype = ""
   try{
   const newComplaint = new Complaint({
-    //type:
+    //type: ctype
     id: Date.now().toString(),
-    registeredby:req.body.email,
+    //registeredby:user[0]['email'],
+    registeredby:email,
     room:room,
     type:type,
     hostel:hostel,
-    desc:desc
+    desc:desc,
+    slot:slot,
+    status:"pending"
     });
     newComplaint.save().then(Complaint =>{
       console.log("complaint registered");
       console.log(Complaint);
+      res.redirect('/dashboard');
     }).catch(err => {
       console.log('new complaint didnt get saved in mongo')
       console.log(err)
+     // res.redirect('/dashboard');
       
     })
+
   } catch(err){
     console.log(err);
   }
   })
 
 
-app.get('/dashboard', isAuthenticated,
+app.get('/dashboard',
+ //checkAuthenticated,
+ isAuthenticated,
 async(req,res)=>{
-  //res.send(user);
-  const{email} = req.body;
-  const complaints = await Complaint.find({email});
+  console.log("========dashboard user ===============");
+  
+  var user = new User();
+  user  = req.user;
+  console.log(user);
+  let objKeys = Object.keys(user);
+  let array =[];
+  objKeys.forEach(key => {
+      let value = user[key];
+      array.push(value);
+  });
+  let a = [...array];
+  console.log("------------");
+  console.log(array[0]);
+  let uservalue = Object.values(array[0]);
+  console.log(uservalue);
+  console.log(uservalue[2]);
+  const email = uservalue[2];
+  const complaints = await Complaint.find({'registeredby':email});
   console.log(complaints);
   res.render('dashboard.ejs'
-  ,{complaints}
+  ,{complaints:complaints}
   );
-  //res.json({complaints});
+ // res.json({complaints});
 
 
   
@@ -185,20 +233,39 @@ app.delete('/logout', (req, res) => {
   res.redirect('/login')
 })
 
-function checkAuthenticated(req, res, next) {
+function checkAuthenticated(req, res, next){
   if (req.isAuthenticated()) {
+    
+    if (req.user[0]['role'] === 'student') {
+      req.session.role = 'student';
+     // req.session.email = req.user[0]['email']
+    }
+
+    if (req.user[0]['role'] === 'admin') {
+      req.session.role = 'admin';
+      req.session.email = req.user[0]['email']
+    }
     return next()
   }
-
-  res.redirect('/dashboard')
+  req.flash('error_msg', "You're not authorized to view this resource")
+  res.redirect('/login')
 }
 
-function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.redirect('/register')
-  }
-  next()
-}
+
+// function checkAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return next()
+//   }
+
+//   res.redirect('/login')
+// }
+
+// function checkNotAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return res.redirect('/register')
+//   }
+//   next()
+// }
 
 //app.listen(3000)
 app.listen(port,()=>{
