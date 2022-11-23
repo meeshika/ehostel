@@ -120,7 +120,7 @@
         <tr>
           <th>C.No</th>
           <th>Student Name</th>
-          <th>Room-Number</th>
+          <!-- <th>Room-Number</th> -->
           <th>Complaint Type</th>
           <th>Date</th>
           <th>Slot Booked</th>
@@ -132,7 +132,16 @@
   <div class="tbl-content">
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
-        <tr>
+        <% for(let i = 0; i < complaints.length; i++) { %>
+          <tr>
+            <td><%= i+1 %></td>
+            <td><%= complaints[i].type %></td>
+            <td><%= complaints[i].slot %></td>
+            <td><%= complaints[i].date %></td>
+            <td><%= complaints[i].status %></td>
+          </tr>
+        <% } %>
+        <!-- <tr>
             <td>1</td>
             <td>John</td>
             <td>O-342</td>
@@ -140,8 +149,8 @@
             <td>25 Nov 2022</td>
             <td>5-6</td>
             <td><button class="status-btn" id="st-btn1" onclick="myfunction(1)" >Pending</button></td>
-        </tr>
-        <tr>
+        </tr> -->
+        <!-- <tr>
             <td>2</td>
             <td>Elohn</td>
             <td>B-452</td>
@@ -149,7 +158,7 @@
             <td>25 Nov 2022</td>
             <td>5-6</td>
             <td><button class="status-btn" id="st-btn2" onclick="myfunction(2)">Pending</button></td>
-        </tr>
+        </tr> -->
       </tbody>
     </table>
   </div>
