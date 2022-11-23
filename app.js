@@ -197,7 +197,7 @@ app.post('/dashboard',isAuthenticated,async(req,res)=>{
   console.log("==========complaints====");
   console.log(email);
   const user = await User.find({email});
-  const{type,registeredby,slot,desc,room}=req.body;
+  const{type,slot,desc,room}=req.body;
   console.log(email);
   // var ctype ;
   // if( val == 1) ctype = "cleaning";
