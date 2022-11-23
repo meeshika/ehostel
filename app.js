@@ -278,7 +278,8 @@ async(req,res)=>{
     complaints_handled = await Complaint.find({'hostel':hostel,'status':"handled"}).count();
     complaints_pending = await Complaint.find({'hostel':hostel,'status':"pending"}).count();
     complaints_total = await Complaint.find({'hostel':hostel}).count();
-    res.render('admin.ejs',{complaints:complaints , complaints_handled , complaints_pending , complaints_total});
+    console.log(complaints_total);
+    res.render('admin.ejs',{complaints:complaints , ch:complaints_handled , cp:complaints_pending , ct:complaints_total});
   }
   //console.log(complaints);
   // res.render('dashboard.ejs'
