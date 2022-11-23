@@ -35,10 +35,8 @@ mongoose.connect(
   
   
 const { 
-  intializePassport , 
-  isAuthenticated 
-   
- //, checkAuthenticated ,
+  intializePassport , isAuthenticated 
+  //, checkAuthenticated ,
   // checkNotAuthenticated
   } = require("./passport-config.js")
 const { userInfo } = require('os')
@@ -68,7 +66,14 @@ app.use(passport.session())
 // app.get('/dashboard',(req,res)=>{
 //     res.render('dashboard.ejs')
 //   })
-      
+
+// app.get('/landing',(res,req)=>{
+//   res.render('landing.ejs')
+// })
+app.get('/landing', (req, res) => {
+  res.render('register.ejs')
+})
+
 app.get('/register', (req, res) => {
   res.render('register.ejs')
 })
@@ -77,10 +82,20 @@ app.post('/register',
   //checkNotAuthenticated, 
   async (req, res) => {
     const {name,password,role,eid,email,hostel} = req.body;
-    console.log(req.body.name);
-    console.log(email);
-    console.log(role);
-    console.log(hostel);
+    // console.log(req.body.name);
+    // console.log(email);
+    // console.log(role);
+    // console.log(hostel);
+    // if(User.find({email})){
+    //   console.log("not a unique email id");
+    //   res.redirect('/register');
+    // }
+    // if(password.length < 8){
+    //   console.log("password is too short");
+    //   res.redirect('./register');
+    // }
+    
+
     try {
       const hashedPassword = await bcrypt.hash(password, 10)
       const newuser = new User({
@@ -136,6 +151,32 @@ app.post('/login',passport.authenticate
      failureRedirect: '/register' ,
   }
 ));
+
+app.get('/admin' ,
+isAuthenticated,
+async(req,res)=>{
+  var user = new User();
+  user  = req.user;
+  console.log(user);
+  let objKeys = Object.keys(user);
+  let array =[];
+  objKeys.forEach(key => {
+      let value = user[key];
+      array.push(value);
+  });
+  console.log("------------");
+  console.log(array[0]);
+  let uservalue = Object.values(array[0]);
+  console.log(uservalue);
+  console.log(uservalue[2]);
+  const email = uservalue[2];
+  const hostel = uservalue[6];
+  const complaints = await Complaint.find({'hostel':hostel});
+  console.log(complaints);
+
+
+  res.render('admin.ejs',{complaints:complaints})
+})
 
 app.post('/dashboard',isAuthenticated,async(req,res)=>{
   var user1 = new User();
@@ -200,25 +241,40 @@ async(req,res)=>{
   
   var user = new User();
   user  = req.user;
-  console.log(user);
+  //console.log(user);
   let objKeys = Object.keys(user);
   let array =[];
   objKeys.forEach(key => {
       let value = user[key];
       array.push(value);
   });
-  let a = [...array];
-  console.log("------------");
-  console.log(array[0]);
+ // console.log("------------");
+ // console.log(array[0]);
   let uservalue = Object.values(array[0]);
-  console.log(uservalue);
-  console.log(uservalue[2]);
+  //console.log(uservalue);
+  //console.log(uservalue[2]);
+  console.log("++++++++++++++++++++++++++++")
   const email = uservalue[2];
-  const complaints = await Complaint.find({'registeredby':email});
-  console.log(complaints);
-  res.render('dashboard.ejs'
-  ,{complaints:complaints}
-  );
+  const role = uservalue[5];
+  const hostel = uservalue[6];
+  console.log(role);
+  let complaints;
+  if(role == 'student')
+  { 
+    console.log("student logged in ===============================");
+    complaints = await Complaint.find({'registeredby':email});
+    res.render('dashboard.ejs',{complaints:complaints});
+  }
+  if( role == 'admin')
+  { 
+    console.log("admin logged in ==================================");
+    complaints = await Complaint.find({'hostel':hostel});
+    res.render('admin.ejs',{complaints:complaints});
+  }
+  //console.log(complaints);
+  // res.render('dashboard.ejs'
+  // ,{complaints:complaints}
+  // );
  // res.json({complaints});
 
 
