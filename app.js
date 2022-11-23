@@ -259,17 +259,26 @@ async(req,res)=>{
   const hostel = uservalue[6];
   console.log(role);
   let complaints;
+  let complaints_handled;
+  let complaints_pending;
+  let complaints_total;
   if(role == 'student')
   { 
     console.log("student logged in ===============================");
     complaints = await Complaint.find({'registeredby':email});
-    res.render('dashboard.ejs',{complaints:complaints});
+    complaints_handled = await Complaint.find({'registeredby':email,'status':"handled"}).count();
+    complaints_pending = await Complaint.find({'registeredby':email,'status':"pending"}).count();
+    complaints_total = await Complaint.find({'registeredby':email}).count();
+    res.render('dashboard.ejs',{complaints:complaints , complaints_handled , complaints_pending , complaints_total});
   }
   if( role == 'admin')
   { 
     console.log("admin logged in ==================================");
     complaints = await Complaint.find({'hostel':hostel});
-    res.render('admin.ejs',{complaints:complaints});
+    complaints_handled = await Complaint.find({'hostel':hostel,'status':"handled"}).count();
+    complaints_pending = await Complaint.find({'hostel':hostel,'status':"pending"}).count();
+    complaints_total = await Complaint.find({'hostel':hostel}).count();
+    res.render('admin.ejs',{complaints:complaints , complaints_handled , complaints_pending , complaints_total});
   }
   //console.log(complaints);
   // res.render('dashboard.ejs'
