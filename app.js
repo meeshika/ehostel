@@ -124,7 +124,10 @@ app.post('/register',
             res.redirect('/failed')
           }
         })
-        
+    
+// app.get('/',(req,res)=>{
+//   res.render('landing.ejs');
+// })
 app.get('/login',(req,res)=>{
     res.render('login.ejs');
 })

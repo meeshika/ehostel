@@ -6,14 +6,17 @@
 }
 
 body {
-	background: #f6f5f7;
+	background-image: url("/img/work-process-bg.png");
+	background-repeat: no-repeat;
+	/* background-position: center; */
+	background-size: cover;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	font-family: 'Montserrat', sans-serif;
 	height: 100vh;
-	margin: -20px 0 50px;
+	/* margin: -20px 0 50px; */
 }
 
 h1 {
@@ -169,9 +172,10 @@ input,select,option{
 }
 
 .overlay {
-	background: #e77080;
+	background-image: url("/img/progress-overlay.jpg");
+	/* background: #e77080;
 	background: -webkit-linear-gradient(to right,#7c89d5, #e77080);
-	background: linear-gradient(to right,#7c89d5, #e77080);
+	background: linear-gradient(to right,#7c89d5, #e77080); */
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
