@@ -131,6 +131,9 @@ app.post('/register',
 app.get('/login',(req,res)=>{
     res.render('login.ejs');
 })
+app.get('/',(req,res)=>{
+  res.render('home.ejs');
+})
 // app.post('/login',passport.authenticate('local',{
 //     // failureRedirect:"/login",
 //     // successRedirect:"/register",
