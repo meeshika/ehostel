@@ -286,10 +286,13 @@ th{
   text-transform: uppercase;
 }
 td{
+  /* height: 30px; */
+  text-transform: capitalize;
   padding: 15px;
   text-align: center;
   vertical-align:middle;
-  font-weight: 500;
+  margin-bottom: 15px;
+  font-weight: 600;
   font-size: 18px;
   color: rgb(65, 63, 63);
   border-bottom: solid 2px rgba(53, 51, 51, 0.1);
@@ -299,6 +302,9 @@ td{
   margin:20px;
 }
 
+.cf1{
+  background-color: #433f3f57;
+}
 
 
 section{
