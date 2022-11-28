@@ -68,8 +68,8 @@ app.use(session({
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'mgarg2_be20@thapar.edu',
-    pass: 'Meeshika@06'
+    user: 'email',
+    pass: 'password'
   }
 });
 // app.use(
@@ -104,7 +104,7 @@ app.post('/connect' , (req,res)=>{
   console.log("emial connect")
   console.log(req.body.email)
   var mailOptions = {
-    from: 'mgarg2_be20@thapar.edu',
+    from: 'email',
     to: req.body.email,
     subject: 'HOSTILIFY',
     text: `Hi , thanks for connecting to hostilfy .`
