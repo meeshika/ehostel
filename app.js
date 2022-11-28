@@ -236,11 +236,12 @@ async(req,res)=>{
   console.log(uservalue[2]);
   const email = uservalue[2];
   const hostel = uservalue[6];
+  const username = uservalue[1];
   const complaints = await Complaint.find({'hostel':hostel});
   console.log(complaints);
 
 
-  res.render('admin.ejs',{complaints:complaints})
+  res.render('admin.ejs',{complaints:complaints , username})
 })
 
 app.post('/dashboard',isAuthenticated,async(req,res)=>{
@@ -316,6 +317,7 @@ app.get('/dashboard', isAuthenticated, async(req,res)=>{
   //console.log(uservalue);
   //console.log(uservalue[2]);
   console.log("++++++++++++++++++++++++++++")
+  const username = uservalue[1]
   const email = uservalue[2];
   const role = uservalue[5];
   const hostel = uservalue[6];
@@ -331,7 +333,7 @@ app.get('/dashboard', isAuthenticated, async(req,res)=>{
     complaints_handled = await Complaint.find({'registeredby':email,'status':"handled"}).count();
     complaints_pending = await Complaint.find({'registeredby':email,'status':"pending"}).count();
     complaints_total = await Complaint.find({'registeredby':email}).count();
-    res.render('dashboard.ejs',{complaints:complaints , complaints_handled , complaints_pending , complaints_total});
+    res.render('dashboard.ejs',{complaints:complaints , complaints_handled , complaints_pending , complaints_total , username});
   }
   if( role == 'admin')
   { 
@@ -341,7 +343,7 @@ app.get('/dashboard', isAuthenticated, async(req,res)=>{
     complaints_pending = await Complaint.find({'hostel':hostel,'status':"pending"}).count();
     complaints_total = await Complaint.find({'hostel':hostel}).count();
     console.log(complaints_total);
-    res.render('admin.ejs',{complaints:complaints , ch:complaints_handled , cp:complaints_pending , ct:complaints_total});
+    res.render('admin.ejs',{complaints:complaints , ch:complaints_handled , cp:complaints_pending , ct:complaints_total , username});
   }
   //console.log(complaints);
   // res.render('dashboard.ejs'
@@ -356,10 +358,10 @@ app.get('/dashboard', isAuthenticated, async(req,res)=>{
 }
 )
 
-app.delete('/logout', (req, res) => {
-  req.logOut()
-  res.redirect('/login')
-})
+// app.delete('/logout', (req, res) => {
+//   req.logOut()
+//   res.redirect('/login')
+// })
 
 // function containsAnycap(str) {
 //   return /[A-Z]/.test(str);
