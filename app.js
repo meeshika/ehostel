@@ -144,13 +144,14 @@ app.post('/register',
     //   console.log("password is too short");
     //   res.redirect('./register');
     // }
-    const errors = validateRegisterInput(req.body)
-    console.log("back in register")
-    console.log(Object.keys(errors).length)
-    if(Object.keys(errors).length > 0 ) {
-      console.log(errors);
-      return res.redirect('/register')
-    }
+    // const errors = validateRegisterInput(req.body)
+    // console.log("back in register")
+    // console.log(Object.keys(errors).length)
+    // if(Object.keys(errors).length > 0 ) {
+    //   console.log(errors);
+    //   return res.redirect('/register')
+    // }
+    console.log(role);
     try {
       const hashedPassword = await bcrypt.hash(password, 10)
       const newuser = new User({
@@ -360,41 +361,41 @@ app.delete('/logout', (req, res) => {
   res.redirect('/login')
 })
 
-function containsAnycap(str) {
-  return /[A-Z]/.test(str);
-}
-function containsAnynum(str) {
-  return /[0-9]/.test(str);
-}
-function containsrate(str) {
-  return /[0-9]/.test(str);
-}
+// function containsAnycap(str) {
+//   return /[A-Z]/.test(str);
+// }
+// function containsAnynum(str) {
+//   return /[0-9]/.test(str);
+// }
+// function containsrate(str) {
+//   return /[0-9]/.test(str);
+// }
 
-function validateRegisterInput (data){
-  let errors = {}
-  console.log("000000000000000000000000000000000000")
-  //console.log(data.name.length)
-  if(data.name.length< 2) {
-    errors.name = 'Name should be between 2 and 30 characters'
-  }
-  if(data.password.length < 8 || data.password.length > 30) {
-    errors.password = 'password should be between 8 and 30 characters'
-  }
-  if(data.eid.length < 8 || data.eid.length > 10) {
-    errors.eid = 'eid should be between 8 and 10 characters'
-  }
-  if(!containsAnycap(data.password)){
-    errors.password = 'password should contain atleast 1 capital letter'
-  }
-  if(!containsAnynum(data.password)){
-    errors.password = 'password should contain atleast 1 number'
-  }
-  if(!containsrate(data.email) && data.email.split(/@/)[1] != 'thapar.edu' ){
-    errors.password = 'email should be like @thapar.edu'
-  }
-  console.log("validated user data")
-  console.log(errors);
-  return errors;
+// function validateRegisterInput (data){
+//   let errors = {}
+//   console.log("000000000000000000000000000000000000")
+//   //console.log(data.name.length)
+//   if(data.name.length< 2) {
+//     errors.name = 'Name should be between 2 and 30 characters'
+//   }
+//   if(data.password.length < 8 || data.password.length > 30) {
+//     errors.password = 'password should be between 8 and 30 characters'
+//   }
+//   if(data.eid.length < 8 || data.eid.length > 10) {
+//     errors.eid = 'eid should be between 8 and 10 characters'
+//   }
+//   if(!containsAnycap(data.password)){
+//     errors.password = 'password should contain atleast 1 capital letter'
+//   }
+//   if(!containsAnynum(data.password)){
+//     errors.password = 'password should contain atleast 1 number'
+//   }
+//   if(!containsrate(data.email) && data.email.split(/@/)[1] != 'thapar.edu' ){
+//     errors.password = 'email should be like @thapar.edu'
+//   }
+//   console.log("validated user data")
+//   console.log(errors);
+//   return errors;
   // if(data.email.split(/@/)[1] != 'thapar.edu'){
   //   errors.email = 'register using Thapar email id'
   // }
@@ -422,7 +423,7 @@ function validateRegisterInput (data){
   //     errors,
   //     isValid: isEmpty(errors)
   // }
-}
+//}
 
 // function checkAuthenticated(req, res, next){
 //   if (req.isAuthenticated()) {
