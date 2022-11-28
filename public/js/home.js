@@ -11,7 +11,7 @@ function scrollToFeatures() {
 function scrollToContact() {
     // var elem = document.getElementById("sC");
     // elem.scrollIntoView();
-   // window.scrollTo(0,1800)
+   window.scrollTo(0,1800)
 }
 function scrollToTop(){
     window.scrollTo(0,0)
