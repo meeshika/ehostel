@@ -7,7 +7,7 @@ const app = express()
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const flash = require('express-flash')
-const session = require('express-session')
+//const session = require('express-session')
 const methodOverride = require('method-override')
 const morgan = require("morgan");
 const path = require('path');
@@ -15,6 +15,12 @@ const mongoose = require("mongoose");
 const User = require('./models/User.js');
 const Complaint = require('./models/Complaint.js')
 const bodyParser = require("body-parser");
+const { v4: uuidv4 } = require("uuid");
+const session = require("express-session");
+const FileStore = require("session-file-store")(session);
+var nodemailer = require('nodemailer');
+
+
 
 //const flash = require('connect-flash');
 
@@ -22,7 +28,7 @@ const port = process.env.PORT || 3001;
 
 
 mongoose.connect(
-  "mongodb+srv://meeshika2:meeshika@cluster0.guftx.mongodb.net/hostel56?retryWrites=true&w=majority",
+  "mongodb+srv://meeshika2:meeshika@cluster0.guftx.mongodb.net/hostelfinal?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -38,7 +44,7 @@ const {
   intializePassport , isAuthenticated 
   //, checkAuthenticated ,
   // checkNotAuthenticated
-  } = require("./passport-config.js")
+} = require("./passport-config.js")
 const { userInfo } = require('os')
 intializePassport(passport);
 
@@ -50,6 +56,8 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(express.static(path.join(__dirname, 'public')));
+
+
 app.use(session({
   //secret: process.env.SESSION_SECRET,
   secret:"secret",
@@ -57,6 +65,28 @@ app.use(session({
   saveUninitialized: false
 }))
 
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'mgarg2_be20@thapar.edu',
+    pass: 'Meeshika@06'
+  }
+});
+// app.use(
+//   session({
+//     genid: (req) => {
+//       console.log("1. in genid req.sessionID: ", req.sessionID);
+//       return uuidv4();
+//     },
+//     // where we store the session data. Normally a Database like MongoDB or PostGreSQL
+//     // session-file-store package defaults to ./sessions
+//     store: new FileStore(),
+//     // think of the secret as a "missing puzzle piece".
+//     secret: "a private key",
+//     resave: false,
+//     saveUninitialized: true,
+//   })
+// );
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -70,6 +100,26 @@ app.use(passport.session())
 // app.get('/landing',(res,req)=>{
 //   res.render('landing.ejs')
 // })
+app.post('/connect' , (req,res)=>{
+  console.log("emial connect")
+  console.log(req.body.email)
+  var mailOptions = {
+    from: 'mgarg2_be20@thapar.edu',
+    to: req.body.email,
+    subject: 'HOSTILIFY',
+    text: `Hi , thanks for connecting to hostilfy .`
+    // html: '<h1>Hi Smartherd</h1><p>Your Messsage</p>'        
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+  res.redirect('/')
+})
 app.get('/landing', (req, res) => {
   res.render('register.ejs')
 })
@@ -331,7 +381,7 @@ function validateRegisterInput (data){
     errors.password = 'password should be between 8 and 30 characters'
   }
   if(data.eid.length < 8 || data.eid.length > 10) {
-    errors.password = 'password should be between 8 and 10 characters'
+    errors.eid = 'eid should be between 8 and 10 characters'
   }
   if(!containsAnycap(data.password)){
     errors.password = 'password should contain atleast 1 capital letter'
