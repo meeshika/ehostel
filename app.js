@@ -18,7 +18,7 @@ const bodyParser = require("body-parser");
 
 //const flash = require('connect-flash');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 
 mongoose.connect(
@@ -94,8 +94,13 @@ app.post('/register',
     //   console.log("password is too short");
     //   res.redirect('./register');
     // }
-    
-
+    const errors = validateRegisterInput(req.body)
+    console.log("back in register")
+    console.log(Object.keys(errors).length)
+    if(Object.keys(errors).length > 0 ) {
+      console.log(errors);
+      return res.redirect('/register')
+    }
     try {
       const hashedPassword = await bcrypt.hash(password, 10)
       const newuser = new User({
@@ -242,10 +247,7 @@ app.post('/dashboard',isAuthenticated,async(req,res)=>{
   })
 
 
-app.get('/dashboard',
- //checkAuthenticated,
- isAuthenticated,
-async(req,res)=>{
+app.get('/dashboard', isAuthenticated, async(req,res)=>{
   console.log("========dashboard user ===============");
   
   var user = new User();
@@ -308,23 +310,87 @@ app.delete('/logout', (req, res) => {
   res.redirect('/login')
 })
 
-function checkAuthenticated(req, res, next){
-  if (req.isAuthenticated()) {
-    
-    if (req.user[0]['role'] === 'student') {
-      req.session.role = 'student';
-     // req.session.email = req.user[0]['email']
-    }
-
-    if (req.user[0]['role'] === 'admin') {
-      req.session.role = 'admin';
-      req.session.email = req.user[0]['email']
-    }
-    return next()
-  }
-  req.flash('error_msg', "You're not authorized to view this resource")
-  res.redirect('/login')
+function containsAnycap(str) {
+  return /[A-Z]/.test(str);
 }
+function containsAnynum(str) {
+  return /[0-9]/.test(str);
+}
+function containsrate(str) {
+  return /[0-9]/.test(str);
+}
+
+function validateRegisterInput (data){
+  let errors = {}
+  console.log("000000000000000000000000000000000000")
+  //console.log(data.name.length)
+  if(data.name.length< 2) {
+    errors.name = 'Name should be between 2 and 30 characters'
+  }
+  if(data.password.length < 8 || data.password.length > 30) {
+    errors.password = 'password should be between 8 and 30 characters'
+  }
+  if(data.eid.length < 8 || data.eid.length > 10) {
+    errors.password = 'password should be between 8 and 10 characters'
+  }
+  if(!containsAnycap(data.password)){
+    errors.password = 'password should contain atleast 1 capital letter'
+  }
+  if(!containsAnynum(data.password)){
+    errors.password = 'password should contain atleast 1 number'
+  }
+  if(!containsrate(data.email) && data.email.split(/@/)[1] != 'thapar.edu' ){
+    errors.password = 'email should be like @thapar.edu'
+  }
+  console.log("validated user data")
+  console.log(errors);
+  return errors;
+  // if(data.email.split(/@/)[1] != 'thapar.edu'){
+  //   errors.email = 'register using Thapar email id'
+  // }
+  // data.username = !isEmpty(data.username) ? data.username : ''
+  // data.password = !isEmpty(data.password) ? data.password : ''
+  // if (!validator.isLength(data.username, {
+  //         min: 2,
+  //         max: 30
+  //     })) {
+  //     errors.username = 'Username should be between 2 and 30 characters'
+  // }
+  // if (validator.isEmpty(data.username)) {
+  //     errors.username = 'Username is required'
+  // }
+  // if (validator.isEmpty(data.password)) {
+  //     errors.password = 'Password is required'
+  // }
+  // if (!validator.isLength(data.password, {
+  //         min: 6,
+  //         max: 30
+  //     })) {
+  //     errors.password = 'Password should be at least 6 characters'
+  // }
+  // return {
+  //     errors,
+  //     isValid: isEmpty(errors)
+  // }
+}
+
+// function checkAuthenticated(req, res, next){
+//   if (req.isAuthenticated()) {
+    
+//     if (req.user[0]['role'] === 'student') {
+//       req.session.role = 'student';
+//      // req.session.email = req.user[0]['email']
+//     }
+
+//     if (req.user[0]['role'] === 'admin') {
+//       req.session.role = 'admin';
+//       req.session.email = req.user[0]['email']
+//     }
+//     return next()
+//   }
+//   req.flash('error_msg', "You're not authorized to view this resource")
+//   res.redirect('/login')
+// }
 
 
 // function checkAuthenticated(req, res, next) {
