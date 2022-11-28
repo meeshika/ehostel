@@ -18,6 +18,8 @@ const bodyParser = require("body-parser");
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
+var nodemailer = require('nodemailer');
+
 
 
 //const flash = require('connect-flash');
@@ -42,7 +44,7 @@ const {
   intializePassport , isAuthenticated 
   //, checkAuthenticated ,
   // checkNotAuthenticated
-  } = require("./passport-config.js")
+} = require("./passport-config.js")
 const { userInfo } = require('os')
 intializePassport(passport);
 
@@ -63,6 +65,13 @@ app.use(session({
   saveUninitialized: false
 }))
 
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'mgarg2_be20@thapar.edu',
+    pass: 'Meeshika@06'
+  }
+});
 // app.use(
 //   session({
 //     genid: (req) => {
@@ -91,6 +100,26 @@ app.use(passport.session())
 // app.get('/landing',(res,req)=>{
 //   res.render('landing.ejs')
 // })
+app.post('/connect' , (req,res)=>{
+  console.log("emial connect")
+  console.log(req.body.email)
+  var mailOptions = {
+    from: 'mgarg2_be20@thapar.edu',
+    to: req.body.email,
+    subject: 'HOSTILIFY',
+    text: `Hi , thanks for connecting to hostilfy .`
+    // html: '<h1>Hi Smartherd</h1><p>Your Messsage</p>'        
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+  res.redirect('/')
+})
 app.get('/landing', (req, res) => {
   res.render('register.ejs')
 })
