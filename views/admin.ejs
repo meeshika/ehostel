@@ -12,6 +12,7 @@
 		<div class="user-acc">
 			<img src="img/sitelogo.png" alt="">
 			<h3>Hello <%=username%></h3>
+      <h4 style="color: grey;">Hostel <%=complaints[0].hostel.toUpperCase()%></h4>
 		</div>
 		<div class="nav-options">
 			<div class="nav-hov">
@@ -127,11 +128,11 @@
       <thead>
         <tr>
           <th>C.No</th>
-          <th>Student Name</th>
+          <th>Room Number</th>
           <!-- <th>Room-Number</th> -->
           <th>Complaint Type</th>
-          <th>Date</th>
           <th>Slot Booked</th>
+          <th>Date</th>
           <th>Status</th>
         </tr>
       </thead>
@@ -142,10 +143,11 @@
       <tbody>
         <% for(let i = 0; i < complaints.length; i++) { %>
           <tr>
-            <td><%= i+1 %></td>
+            <td class="cf1"><%= i+1 %></td>
+            <td ><%= complaints[i].room %></td>
             <td class="cf1"><%= complaints[i].type %></td>
             <td><%= complaints[i].slot %></td>
-            <td class="cf1"><%= complaints[i].date %></td>
+            <td><%= complaints[i].date.getDate()%>-<%=complaints[i].date.getMonth()%>-<%= complaints[i].date.getFullYear()%></td>
             <td><button class="status-btn" id="st-btn1" onclick="myfunction(1)" ><%= complaints[i].status %></button></td>
           </tr>
         <% } %>

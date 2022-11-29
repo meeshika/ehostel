@@ -48,7 +48,12 @@ body{
     width: 90px;
     border-radius: 50%;
   }
-  .user-acc h3{
+  /* .user-acc h3{
+    /* margin-bottom: 4px; */
+    /* padding-bottom: 10px; */
+    /* border-bottom: 2px solid rgba(250,250,250,0.2); */
+  /* }  */
+  .user-acc h4{
     /* margin-bottom: 4px; */
     padding-bottom: 10px;
     border-bottom: 2px solid rgba(250,250,250,0.2);

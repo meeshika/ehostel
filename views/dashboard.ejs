@@ -186,7 +186,7 @@
 			<tr>
 				<td><%= i+1 %></td>
 				<td class="cf1"><%= complaints[i].type %></td>
-				<td><%= complaints[i].date %></td>
+				<td><%= complaints[i].date.getDate()%>-<%=complaints[i].date.getMonth()%>-<%= complaints[i].date.getFullYear()%></td>
 				<td class="cf1"><%= complaints[i].slot %></td>
 				<td><%= complaints[i].status %></td>
 			</tr>
